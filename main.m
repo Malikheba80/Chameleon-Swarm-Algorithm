@@ -1,4 +1,4 @@
-%% Chameleon Swarm Algorithm (CSA) source codes version 1.0
+ %% Chameleon Swarm Algorithm (CSA) source codes version 1.0
 %
 %  Developed in MATLAB R2018a
 %
@@ -18,45 +18,32 @@
 clear 
 close all
 clc
+%% % Prepare the problem
+dim = 2;
+ub = 50 * ones(1, 2);
+lb = -50 * ones(1, 2);
+fobj = @Objfun;
 
-format longe;
-rng(0); % control random values generation
-set(0,'defaultTextInterpreter','latex');             %trying to set the default
-extraInputs = {'interpreter','latex','fontsize',11}; % name, value pairs
-
-% Global parameters for various metaheurstic search
-%***************************************************
-K   = 23;    % number of function to execute.. max is 15
-PopSize      = 100;   % Number of search agents
-maxIteration = 1000;   % Maximum number of iterations
-
-for k=1:K
-
-    Function_name = sprintf('F%d',k); 
-    [lb,ub,dim,fobj]= Get_Functions_details(Function_name);
-      
-    [Best_score_CSA,Best_pos_CSA,CSAConvCurve]=Chameleonv1(PopSize,maxIteration,lb,ub,dim,fobj);
-%    [Best_score_CSA,Best_pos_CSA,CSAConvCurve]=Chameleonv2(PopSize,maxIteration,lb,ub,dim,fobj);
-
-
-%% % Draw the objective space
-
-figure;  set(gcf,'color','w');
-
-plot(CSAConvCurve,'LineWidth',2,'Color','b'); grid;
-title({'Objective space','(Convergence characteristic)'},'interpreter','latex','FontName','Times','fontsize',10);
-xlabel('Iteration','interpreter','latex','FontName','Times','fontsize',10)
-ylabel('Best score obtained so far','interpreter','latex','FontName','Times','fontsize',10); 
-
-axis tight; grid on; box on 
-     
-h1=legend('CSA','location','northeast');
-set(h1,'interpreter','Latex','FontName','Times','FontSize',10) 
-ah=axes('position',get(gca,'position'),...
-            'visible','off');
-        
-display(['Function no: ===> ', num2str(k),' ===>The optimal value located is ', num2str(Best_score_CSA,12)]);
-
-close all
-end
+%% % CSA parameters 
+noP = 30;
+maxIter = 1000;
  
+
+             [bestFitness, bestPosition, CSAConvCurve] =Chameleon(noP,maxIter,lb,ub,dim,fobj);
+
+              disp(['===> The optimal fitness value found by Standard Chameleon is ', num2str(bestFitness, 15)]);
+% %% % Draw the objective space
+% 
+% figure;  set(gcf,'color','w');
+% 
+% plot(CSAConvCurve,'LineWidth',2,'Color','b'); grid;
+% title({'Objective space','(Convergence characteristic)'},'interpreter','latex','FontName','Times','fontsize',10);
+% xlabel('Iteration','interpreter','latex','FontName','Times','fontsize',10)
+% ylabel('Best score obtained so far','interpreter','latex','FontName','Times','fontsize',10); 
+% 
+% axis tight; grid on; box on 
+%      
+% h1=legend('Chameleon','location','northeast');
+% set(h1,'interpreter','Latex','FontName','Times','FontSize',10) 
+% ah=axes('position',get(gca,'position'),...
+%             'visible','off');
